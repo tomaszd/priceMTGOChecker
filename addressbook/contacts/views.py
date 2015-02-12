@@ -5,11 +5,26 @@ from contacts.models import Contact
 from django.views.generic import UpdateView
 from django.views.generic import DeleteView
 from django.views.generic import DetailView
+import forms
+
 
 class ListContactView(ListView):
     model = Contact
     template_name = 'contact_list.html'
 
+class CreateContactView(CreateView):
+
+    model = Contact
+    template_name = 'edit_contact.html'
+    form_class = forms.ContactForm
+
+class UpdateContactView(UpdateView):
+
+    model = Contact
+    template_name = 'edit_contact.html'
+    form_class = forms.ContactForm
+
+'''
 class CreateContactView(CreateView):
     model = Contact
     template_name = 'edit_contact.html'
@@ -35,7 +50,7 @@ class UpdateContactView(UpdateView):
                                     kwargs={'pk': self.get_object().id})
 
         return context
-
+'''
 class DeleteContactView(DeleteView):
     model = Contact
     template_name = 'delete_contact.html'

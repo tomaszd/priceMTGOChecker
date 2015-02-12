@@ -77,8 +77,6 @@ STATICFILES_DIRS = (
         'static',
     ),
 )
-print 'STATIC_URL', os.path.abspath(STATIC_URL)
-print 'STATICFILES_DIRS', STATICFILES_DIRS
 # List of finder classes that know how to find static files in
 # various locations.
 STATICFILES_FINDERS = (
