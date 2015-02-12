@@ -9,11 +9,11 @@
 <form action="{% url "contacts-edit-addresses" pk=contact.id %}"
       method="POST">
     {% csrf_token %}
-    {{ form.management_form }}
-    {% for address_form in form %}
 
+       {% for address_form in form %}
+    {{ form.management_form }}
         <ul>
-        {{ address_form.as_ul }}
+        {{ address_form.as_p }}
         </ul>
 
     {% endfor %}

@@ -6,11 +6,26 @@ from django.views.generic import UpdateView
 from django.views.generic import DeleteView
 from django.views.generic import DetailView
 import forms
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
+# not sure here
+from django.core.exceptions import ObjectDoesNotExist
+from django.http import Http404
 
 
-class ListContactView(ListView):
+class LoggedInMixin(object):
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(LoggedInMixin, self).dispatch(*args, **kwargs)
+
+class ListContactView(LoggedInMixin, ListView):
     model = Contact
     template_name = 'contact_list.html'
+
+    def get_queryset(self):
+
+        return Contact.objects.filter(owner=self.request.user)
 
 class CreateContactView(CreateView):
 
@@ -58,9 +73,33 @@ class DeleteContactView(DeleteView):
     def get_success_url(self):
         return reverse('contacts-list')
 
-class ContactView(DetailView):
+class ContactView(LoggedInMixin, DetailView):
+
     model = Contact
     template_name = 'contact.html'
+
+
+    def get_object(self, queryset=None):
+        """Returns the object the view is displaying.
+
+        """
+
+        if queryset is None:
+            queryset = self.get_queryset()
+
+        pk = self.kwargs.get(self.pk_url_kwarg, None)
+        queryset = queryset.filter(
+            pk=pk,
+            owner=self.request.user,
+        )
+
+        try:
+            obj = queryset.get()
+        except ObjectDoesNotExist:
+            raise Http404((u"No %(verbose_name)s found matching the query") %
+                          {'verbose_name': queryset.model._meta.verbose_name})
+
+        return obj
 
 class EditContactAddressView(UpdateView):
 
