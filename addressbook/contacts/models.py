@@ -3,12 +3,19 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
 
 
+class ContactManager(models.Manager):
+
+    def with_email(self):
+        return self.filter(email__ne='')
+
 class Contact(models.Model):
 
     first_name = models.CharField(max_length=255,)
     last_name = models.CharField(max_length=255,)
     email = models.EmailField()
-    owner = models.ForeignKey(User)
+    owner = models.ForeignKey(
+                              User)
+    objects = ContactManager()
 
     def __str__(self):
 

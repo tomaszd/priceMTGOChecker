@@ -14,8 +14,20 @@ from django.test import LiveServerTestCase
 from selenium.webdriver.firefox.webdriver import WebDriver
 from rebar.testing import flatten_to_dict
 from contacts import forms
+import django.http
+'''
+import django.utils.unittest as unittest2
 
+class LocaleMiddlewareTests(unittest2.TestCase):
 
+    def test_request_not_processed(self):
+
+        middleware = LocaleMiddle()
+        response = django.http.HttpResponse()
+        middleware.process_response(None, response)
+
+        self.assertFalse(response.cookies)
+'''
 class SimpleTest(TestCase):
     def test_basic_addition(self):
         """
@@ -36,6 +48,16 @@ class ContactTests(TestCase):
             'John Smith',
         )
 
+
+    def test_with_email(self):
+
+        # make a couple Contacts
+        Contact.objects.create(first_name='Nathan')
+        Contact.objects.create(email='nathan@eventbrite.com')
+
+        self.assertEqual(
+            len(Contact.objects.with_email()), 1
+        )
 
 class ContactListViewTests(TestCase):
     """Contact list view tests."""
