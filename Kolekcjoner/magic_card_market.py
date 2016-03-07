@@ -7,7 +7,7 @@ from BeautifulSoup import BeautifulSoup
 import requests
 
 
-def get_singles_details_from_magic_card_market( cardname=None ):
+def get_singles_details_MCM( cardname=None ):
   url = "http://www.magiccardmarket.eu/?mainPage=showSearchResult&searchFor="
   if not cardname:
     print "no card specified"
@@ -66,7 +66,7 @@ def get_singles_details_from_magic_card_market( cardname=None ):
     list_of_cards.append( card_details )
   return list_of_cards
 
-def get_best_expansion_set_to_get_price_from( list_of_cards ):
+def get_best_expansion( list_of_cards ):
     """This is getting dict from"""
     for single_detail in list_of_cards:
       print single_detail['expansion_set'] , " : ", single_detail['price']
@@ -79,7 +79,7 @@ def get_best_expansion_set_to_get_price_from( list_of_cards ):
     print   lowest_price_single
     return lowest_price_single
 
-def get_price_trend_for_single_card( lowest_price_single ):
+def get_price_trend( lowest_price_single ):
   """get price tend form sites like : 
    https://www.magiccardmarket.eu/Products/Singles/Future+Sight/Tarmogoyf"""
   # 'href': '<a href="/Products/Singles/Magic+2012/Manabarbs">Manabarbs</a>' -> /Products/Singles/Magic+2012/Manabarbs
@@ -101,8 +101,8 @@ def get_price_trend_for_single_card( lowest_price_single ):
   lowest_price_single['price_trend'] = price_trend
   return  lowest_price_single
 
-def _get_price_and_exp_from_magic_card_Market( cardname ):
-  """ function return dict wih al details about card in form:
+def get_price_and_set_MagicCardMarket( cardname ):
+  """ function return dict with all details about card in form:
   
   {'comment': '',
    'singles': 'Singles',
@@ -112,15 +112,11 @@ def _get_price_and_exp_from_magic_card_Market( cardname ):
    'href': 'https://www.magiccardmarket.eu/Products/Singles/Magic+2012/Manabarbs',
    'expansion_set': 'Magic+2012'}
   """
-  lowest_price_single = get_best_expansion_set_to_get_price_from( get_singles_details_from_magic_card_market( cardname ) )
-  lowest_price_single = get_price_trend_for_single_card( lowest_price_single )
-  print lowest_price_single
+  lowest_price_single = get_best_expansion( get_singles_details_MCM( cardname ) )
+  lowest_price_single = get_price_trend( lowest_price_single )
   return lowest_price_single
 
-
-
-
 if __name__ == "__main__":\
-  print _get_price_and_exp_from_magic_card_Market( "tarmogoyf" )
+  print get_price_and_set_MagicCardMarket( "tarmogoyf" )
 
 
