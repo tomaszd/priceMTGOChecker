@@ -82,10 +82,9 @@ def get_best_expansion_set_to_get_price_from( list_of_cards ):
 def get_price_trend_for_single_card( lowest_price_single ):
   """get price tend form sites like : 
    https://www.magiccardmarket.eu/Products/Singles/Future+Sight/Tarmogoyf"""
-  base_url = "https://www.magiccardmarket.eu"
   # 'href': '<a href="/Products/Singles/Magic+2012/Manabarbs">Manabarbs</a>' -> /Products/Singles/Magic+2012/Manabarbs
   url_for_single = lowest_price_single["href"]
-  final_single_url = base_url + url_for_single
+  final_single_url = url_for_single
   print "final_single_url", final_single_url
   data_for_single = requests.get( final_single_url )
   soup = BeautifulSoup( data_for_single.text )
@@ -103,14 +102,25 @@ def get_price_trend_for_single_card( lowest_price_single ):
   return  lowest_price_single
 
 def _get_price_and_exp_from_magic_card_Market( cardname ):
+  """ function return dict wih al details about card in form:
+  
+  {'comment': '',
+   'singles': 'Singles',
+   price_trend': u'113,50 EURO'
+   'price': '0,02 EURO',
+   'avail': '1379',
+   'href': 'https://www.magiccardmarket.eu/Products/Singles/Magic+2012/Manabarbs',
+   'expansion_set': 'Magic+2012'}
+  """
   lowest_price_single = get_best_expansion_set_to_get_price_from( get_singles_details_from_magic_card_market( cardname ) )
   lowest_price_single = get_price_trend_for_single_card( lowest_price_single )
+  print lowest_price_single
   return lowest_price_single
 
 
 
 
 if __name__ == "__main__":\
-  print _get_price_and_exp_from_magic_card_Market( "manabarbs" )
+  print _get_price_and_exp_from_magic_card_Market( "tarmogoyf" )
 
 
