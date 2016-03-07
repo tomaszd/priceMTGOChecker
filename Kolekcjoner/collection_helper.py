@@ -106,6 +106,9 @@ if __name__ == "__main__":
       karta['cena'] = price
       lazy_loading_dict[karta['nazwa']] = price
       suma += karta['ilosc'] * float(price.replace('$', ''))
+      print " after adding {} {} - worth total in EURO :  {}".format(karta['ilosc'],
+                                                                     price,
+                                                                     suma)
     except:
       bledy.append(karta)
       # karta['cenaTCG']=getTCGPlayerPrices(karta['nazwa'])
