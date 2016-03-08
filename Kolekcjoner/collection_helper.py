@@ -72,7 +72,7 @@ def getTCGPlayerPrices(cardName, cardSet=None):
 
 if __name__ == "__main__":
   print 'dupa'
-  input_file = 'Test2016.xlsx'
+  input_file = 'Luty2016.xlsx'
   my_cards = convert_xlsx2dict(input_file)
   bledy = []
   suma = 0
