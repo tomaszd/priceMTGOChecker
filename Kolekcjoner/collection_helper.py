@@ -63,8 +63,8 @@ def getTCGPlayerPrices(cardName, cardSet=None):
   endHighIndex = rawHTML.find("<", startHighIndex)
   highPrice = rawHTML[startHighIndex:endHighIndex]
   print [lowPrice, midPrice, highPrice]
-  import pdb
-  pdb.set_trace()
+  #import pdb
+  #pdb.set_trace()
 
   return [lowPrice, midPrice, highPrice]
 
@@ -72,17 +72,17 @@ def getTCGPlayerPrices(cardName, cardSet=None):
 
 if __name__ == "__main__":
   print 'dupa'
-  input_file = 'Luty2016.xlsx'
+  input_file = 'Test2016.xlsx'
   my_cards = convert_xlsx2dict(input_file)
   bledy = []
   suma = 0
   lazy_loading_dict = {}
-  for karta in my_cards:
-    try:
-      if karta['nazwa'] in lazy_loading_dict.keys():
-        price = lazy_loading_dict[karta['nazwa']]
-        print "Already price was taken for {} it is {}".format(karta['nazwa'], price)
-      else:
+  for karta in my_cards:   
+    if karta['nazwa'] in lazy_loading_dict.keys():
+      price = lazy_loading_dict[karta['nazwa']]
+      print "Already price was taken for {} it is {}".format(karta['nazwa'], price)
+    else:
+      try:
         card_details = magic_card_market.get_price_and_set_MagicCardMarket(karta['nazwa'])
         price_trend = card_details["price_trend"].split(" ")[0]
         expansion_set = card_details['expansion_set']
@@ -94,26 +94,33 @@ if __name__ == "__main__":
         price = price_trend
         # price = getCFBPrice( karta['nazwa'] )
         """
-          {'comment': '',
-           'singles': 'Singles',
-           price_trend': u'113,50 EURO'
-          'price': '0,02 EURO',
-          'avail': '1379',
-          'href': 'https://www.magiccardmarket.eu/Products/Singles/Magic+2012/Manabarbs',
-          'expansion_set': 'Magic+2012'}
+        {'comment': '',
+        'singles': 'Singles',
+        price_trend': u'113,50 EURO'
+        'price': '0,02 EURO',
+        'avail': '1379',
+        'href': 'https://www.magiccardmarket.eu/Products/Singles/Magic+2012/Manabarbs',
+        'expansion_set': 'Magic+2012'}
         """
+      except:
+        print "issues for {}".format(karta)
+        bledy.append(karta)
+        
 
-      karta['cena'] = price
-      lazy_loading_dict[karta['nazwa']] = price
-      suma += karta['ilosc'] * float(price.replace('$', ''))
-      print " after adding {} {} - worth total in EURO :  {}".format(karta['ilosc'],
-                                                                     price,
-                                                                     suma)
+    karta['cena'] = price
+    lazy_loading_dict[karta['nazwa']] = price
+    suma += karta['ilosc'] * float(price.replace('$', '').replace(",","."))
+    print " after adding {} {} - worth total in EURO :  {}".format(karta['ilosc'],
+                                                                 price,
+                                                                 suma)
+    """  
     except:
+      print "issues for {}".format(karta)
       bledy.append(karta)
       # karta['cenaTCG']=getTCGPlayerPrices(karta['nazwa'])
-
-  timestamp = datetime.datetime.now().strftime("%Y_%B_%d._%I:%M%p")
+    """
+  
+  timestamp = datetime.datetime.now().strftime("%Y_%B")
   with open('result' + timestamp + '.txt', 'w') as outfile:
     json.dump(my_cards, outfile)
   with open('bledy' + timestamp + '.txt', 'w') as outfile2:

@@ -26,8 +26,21 @@ def get_singles_details_MCM(cardname=None):
   base_url = "https://www.magiccardmarket.eu"
   for row in range(len(soup.findAll('tr')))[1:-1]:
     card_details = {}
+    #print "checking ",full_url
+    try :
+      thumb, expan, rarity, href, comment, singles, avail, price = soup.findAll('tr')[row].findAll('td')
+    except:
+      print "just one occurence for {}".format(full_url)
+      card_details = {
 
-    thumb, expan, rarity, href, comment, singles, avail, price = soup.findAll('tr')[row].findAll('td')
+                  "href":   full_url,
+                  "comment": "1 occurence",
+                  "singles": False,
+                  "avail": False,
+                  "expansion_set":"strange",
+                  "price": "strange"}
+      print "dupa2"
+      return [ card_details ]
     thumb = str(thumb).replace('<td>', '').replace('</td>', '')
     expan = str(expan).replace('<td>', '').replace('</td>', '')
     href = str(href).replace('<td>', '').replace('</td>', '')
@@ -39,7 +52,7 @@ def get_singles_details_MCM(cardname=None):
     if is_card_single:
       expansion_set = href.split('Singles/')[1].split('/')[0]
     else:
-      print "This is not a single card skipping {}".format(href)
+      
       continue
     if expansion_set in ["Alpha", "Beta", "Unlimited"]:
       print "Expansion set is {} .skipping then ...for {}".format(expansion_set,
@@ -67,6 +80,8 @@ def get_singles_details_MCM(cardname=None):
                   "price": price}
 
     list_of_cards.append(card_details)
+  if list_of_cards ==[]	:
+    print "Nie ma!"   
   return list_of_cards
 
 def get_best_expansion(list_of_cards):
