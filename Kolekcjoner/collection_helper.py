@@ -63,8 +63,8 @@ def getTCGPlayerPrices(cardName, cardSet=None):
   endHighIndex = rawHTML.find("<", startHighIndex)
   highPrice = rawHTML[startHighIndex:endHighIndex]
   print [lowPrice, midPrice, highPrice]
-  #import pdb
-  #pdb.set_trace()
+  # import pdb
+  # pdb.set_trace()
 
   return [lowPrice, midPrice, highPrice]
 
@@ -77,7 +77,7 @@ if __name__ == "__main__":
   bledy = []
   suma = 0
   lazy_loading_dict = {}
-  for karta in my_cards:   
+  for karta in my_cards:
     if karta['nazwa'] in lazy_loading_dict.keys():
       price = lazy_loading_dict[karta['nazwa']]
       print "Already price was taken for {} it is {}".format(karta['nazwa'], price)
@@ -105,21 +105,22 @@ if __name__ == "__main__":
       except:
         print "issues for {}".format(karta)
         bledy.append(karta)
-        
+
 
     karta['cena'] = price
     lazy_loading_dict[karta['nazwa']] = price
-    suma += karta['ilosc'] * float(price.replace('$', '').replace(",","."))
-    print " after adding {} {} - worth total in EURO :  {}".format(karta['ilosc'],
+    suma += karta['ilosc'] * float(price.replace('$', '').replace(",", "."))
+    print " after adding {} {} - worth total in EURO :  {} -> added {}".format(karta['ilosc'],
                                                                  price,
-                                                                 suma)
+                                                                 suma,
+                                                                 karta['nazwa'])
     """  
     except:
       print "issues for {}".format(karta)
       bledy.append(karta)
       # karta['cenaTCG']=getTCGPlayerPrices(karta['nazwa'])
     """
-  
+
   timestamp = datetime.datetime.now().strftime("%Y_%B")
   with open('result' + timestamp + '.txt', 'w') as outfile:
     json.dump(my_cards, outfile)
