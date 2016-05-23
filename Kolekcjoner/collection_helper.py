@@ -124,16 +124,20 @@ if __name__ == "__main__":
     """
 
   timestamp = datetime.datetime.now().strftime("%Y_%B")
-  dir_with_result_path = "Results_" + str(timestamp)
-  os.mkdir(dir_with_result_path)
+  result_path = "Results"
+  detailed_result_path = os.path.join(result_path,
+                                      "Results_" + str(timestamp))
+  if not os.path.exists(detailed_result_path):
+    print "There is not path {} . Creating it".format(detailed_result_path)
+    os.mkdir(detailed_result_path)
 
-  with open(os.path.join(dir_with_result_path,
+  with open(os.path.join(detailed_result_path,
                          'result' + timestamp + '.txt'), 'w') as outfile:
     json.dump(my_cards, outfile)
-  with open(os.path.join(dir_with_result_path,
-                         'bledy' + timestamp + '.txt'), 'w') as outfile2:
+  with open(os.path.join(detailed_result_path,
+                         'errors' + timestamp + '.txt'), 'w') as outfile2:
     json.dump(bledy, outfile2)
-  with open(os.path.join(dir_with_result_path,
+  with open(os.path.join(detailed_result_path,
                          'suma' + timestamp + '.txt'), 'w') as outfile3:
     json.dump(suma, outfile3)
   print "Finito!!!!!"
