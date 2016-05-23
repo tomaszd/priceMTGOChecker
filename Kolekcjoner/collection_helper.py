@@ -1,6 +1,7 @@
 import datetime
 import json
 import openpyxl
+import os
 import urllib
 import magic_card_market
 
@@ -72,7 +73,8 @@ def getTCGPlayerPrices(cardName, cardSet=None):
 
 if __name__ == "__main__":
   print 'dupa'
-  input_file = 'Luty2016.xlsx'
+  # input_file = 'Luty2016.xlsx'
+  input_file = 'Test2016.xlsx'
   my_cards = convert_xlsx2dict(input_file)
   bledy = []
   suma = 0
@@ -114,7 +116,7 @@ if __name__ == "__main__":
                                                                  price,
                                                                  suma,
                                                                  karta['nazwa'])
-    """  
+    """
     except:
       print "issues for {}".format(karta)
       bledy.append(karta)
@@ -122,9 +124,16 @@ if __name__ == "__main__":
     """
 
   timestamp = datetime.datetime.now().strftime("%Y_%B")
-  with open('result' + timestamp + '.txt', 'w') as outfile:
+  dir_with_result_path = "Results_" + str(timestamp)
+  os.mkdir(dir_with_result_path)
+
+  with open(os.path.join(dir_with_result_path,
+                         'result' + timestamp + '.txt'), 'w') as outfile:
     json.dump(my_cards, outfile)
-  with open('bledy' + timestamp + '.txt', 'w') as outfile2:
+  with open(os.path.join(dir_with_result_path,
+                         'bledy' + timestamp + '.txt'), 'w') as outfile2:
     json.dump(bledy, outfile2)
-  with open('suma' + timestamp + '.txt', 'w') as outfile2:
-    json.dump(suma, outfile2)
+  with open(os.path.join(dir_with_result_path,
+                         'suma' + timestamp + '.txt'), 'w') as outfile3:
+    json.dump(suma, outfile3)
+  print "Finito!!!!!"
