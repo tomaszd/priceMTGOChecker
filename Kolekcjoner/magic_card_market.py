@@ -26,7 +26,7 @@ def get_singles_details_MCM(cardname=None):
   base_url = "https://www.magiccardmarket.eu"
   for row in range(len(soup.findAll('tr')))[1:-1]:
     card_details = {}
-    #print "checking ",full_url
+    # print "checking ",full_urlsfd
     try :
       thumb, expan, rarity, href, comment, singles, avail, price = soup.findAll('tr')[row].findAll('td')
     except:
@@ -52,7 +52,7 @@ def get_singles_details_MCM(cardname=None):
     if is_card_single:
       expansion_set = href.split('Singles/')[1].split('/')[0]
     else:
-      
+
       continue
     if expansion_set in ["Alpha", "Beta", "Unlimited"]:
       print "Expansion set is {} .skipping then ...for {}".format(expansion_set,
@@ -80,8 +80,8 @@ def get_singles_details_MCM(cardname=None):
                   "price": price}
 
     list_of_cards.append(card_details)
-  if list_of_cards ==[]	:
-    print "Nie ma!"   
+  if list_of_cards == []	:
+    print "Nie ma!"
   return list_of_cards
 
 def get_best_expansion(list_of_cards):
@@ -95,7 +95,7 @@ def get_best_expansion(list_of_cards):
     return lowest_price_single
 
 def get_price_trend(lowest_price_single):
-  """get price tend form sites like : 
+  """get price tend form sites like :
    https://www.magiccardmarket.eu/Products/Singles/Future+Sight/Tarmogoyf"""
   # 'href': '<a href="/Products/Singles/Magic+2012/Manabarbs">Manabarbs</a>' -> /Products/Singles/Magic+2012/Manabarbs
   url_for_single = lowest_price_single["href"]
@@ -119,7 +119,7 @@ def get_price_trend(lowest_price_single):
 
 def get_price_and_set_MagicCardMarket(cardname):
   """ function return dict with all details about card in form:
-  
+
   {'comment': '',
    'singles': 'Singles',
    price_trend': u'113,50 EURO'
