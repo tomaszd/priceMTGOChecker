@@ -47,7 +47,9 @@ def get_singles_details_MCM(cardname=None):
     comment = str(comment).replace('<td>', '').replace('</td>', '')
     singles = str(singles).replace('<td>', '').replace('</td>', '')
     avail = str(avail).replace('<td>', '').replace('</td>', '')
-    price = str(price).replace('<td>', '').replace('</td>', '').replace('&#x20AC;', 'EURO')
+    price = float(str(price).replace('<td>', '').replace('</td>', '').replace(
+                      '&#x20AC;', '').replace(
+                      ',', '.').replace(' ', ''))
     is_card_single = 'Products/Singles/' in href
     if is_card_single:
       expansion_set = href.split('Singles/')[1].split('/')[0]
@@ -88,6 +90,7 @@ def get_best_expansion(list_of_cards):
     """This is getting lowest price dict. the cheapest expansion set"""
   #   for single_detail in list_of_cards:
   #     print single_detail['expansion_set'] , " : ", single_detail['price']
+
     newlist_sorted_by_price = sorted(list_of_cards, key=lambda k: k['price'])
   #    for single_detail in newlist_sorted_by_price:
   #      print single_detail['expansion_set'] , " : ", single_detail['price']
@@ -133,6 +136,10 @@ def get_price_and_set_MagicCardMarket(cardname):
   return lowest_price_single
 
 if __name__ == "__main__":\
-  print get_price_and_set_MagicCardMarket("tarmogoyf")
+  # print get_price_and_set_MagicCardMarket("tarmogoyf")
+  cardname = "Misty Rainforest"
+  print get_singles_details_MCM(cardname)
+  print get_best_expansion(get_singles_details_MCM(cardname))
+  # print get_price_and_set_MagicCardMarket("Misty Rainforest")
 
 

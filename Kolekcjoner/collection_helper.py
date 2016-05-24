@@ -83,13 +83,15 @@ if __name__ == "__main__":
     if karta['nazwa'] in lazy_loading_dict.keys():
       price = lazy_loading_dict[karta['nazwa']]
       print "Already price was taken for {} it is {}".format(karta['nazwa'], price)
+
     else:
+      price = "0"
       try:
         card_details = magic_card_market.get_price_and_set_MagicCardMarket(karta['nazwa'])
         price_trend = card_details["price_trend"].split(" ")[0]
         expansion_set = card_details['expansion_set']
         # .split( " " )[0] to remove " EURO"
-        price = card_details['price'].split(" ")[0]
+        price = card_details['price']
         karta['expansion_set'] = expansion_set
         karta['href'] = card_details["href"]
         # #Na razie price liczone z prcie trendu
@@ -125,6 +127,10 @@ if __name__ == "__main__":
 
   timestamp = datetime.datetime.now().strftime("%Y_%B")
   result_path = "Results"
+  if not os.path.exists(result_path):
+    print "There is not path {} . Creating it".format(result_path)
+    os.mkdir(result_path)
+
   detailed_result_path = os.path.join(result_path,
                                       "Results_" + str(timestamp))
   if not os.path.exists(detailed_result_path):
