@@ -142,7 +142,7 @@ def get_price_and_set_MagicCardMarket(cardname):
 
 if __name__ == "__main__":\
   # print get_price_and_set_MagicCardMarket("tarmogoyf")
-  cardname = "goblin warchief"
+  cardname = "Soul Majesty"
   print get_singles_details_MCM(cardname)
   print get_best_expansion(get_singles_details_MCM(cardname))
   # print get_price_and_set_MagicCardMarket("Misty Rainforest")
