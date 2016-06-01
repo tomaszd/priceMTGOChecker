@@ -9,6 +9,7 @@ import requests
 
 def get_singles_details_MCM(cardname=None):
   url = "http://www.magiccardmarket.eu/?mainPage=showSearchResult&searchFor="
+
   if not cardname:
     print "no card specified"
     return []
@@ -30,7 +31,7 @@ def get_singles_details_MCM(cardname=None):
     try :
       thumb, expan, rarity, href, comment, singles, avail, price = soup.findAll('tr')[row].findAll('td')
     except:
-      print "just one occurence for {}".format(full_url)
+      print "just one occurrence for {}".format(full_url)
       card_details = {
 
                   "href":   full_url,
@@ -39,14 +40,24 @@ def get_singles_details_MCM(cardname=None):
                   "avail": False,
                   "expansion_set":"strange",
                   "price": "strange"}
-      print "dupa2"
       return [ card_details ]
+
+    if price.text == "N/A":
+      print "Warning! N/A for price {} .{}".format(price, href)
+      continue
+    if "Playmat" in str(href) :
+      print "Warning! This is Playmat , Skipping...", href
+      continue
+    if "Promo" in str(href) :
+      print "Warning! This is PROMO price , Skipping...", href
+      continue
     thumb = str(thumb).replace('<td>', '').replace('</td>', '')
     expan = str(expan).replace('<td>', '').replace('</td>', '')
     href = str(href).replace('<td>', '').replace('</td>', '')
     comment = str(comment).replace('<td>', '').replace('</td>', '')
     singles = str(singles).replace('<td>', '').replace('</td>', '')
     avail = str(avail).replace('<td>', '').replace('</td>', '')
+
     price = float(str(price).replace('<td>', '').replace('</td>', '').replace(
                       '&#x20AC;', '').replace(
                       ',', '.').replace(' ', ''))
@@ -60,15 +71,9 @@ def get_singles_details_MCM(cardname=None):
       print "Expansion set is {} .skipping then ...for {}".format(expansion_set,
                                                                   cardname)
       continue
-    # print "thumb", thumb
-    # print "expan", expan
-    # print "rarity", rarity
+
     if comment:
       print "comment", comment
-    # print "singles", singles
-    # print "avail", avail
-#    print "expansion_set", expansion_set
-#    print "price", price
 
     card_details = {
                   # "thumb":thumb,
@@ -83,7 +88,7 @@ def get_singles_details_MCM(cardname=None):
 
     list_of_cards.append(card_details)
   if list_of_cards == []	:
-    print "Nie ma!"
+    print "WARNING! . There are no cards"
   return list_of_cards
 
 def get_best_expansion(list_of_cards):
@@ -137,7 +142,7 @@ def get_price_and_set_MagicCardMarket(cardname):
 
 if __name__ == "__main__":\
   # print get_price_and_set_MagicCardMarket("tarmogoyf")
-  cardname = "Misty Rainforest"
+  cardname = "goblin warchief"
   print get_singles_details_MCM(cardname)
   print get_best_expansion(get_singles_details_MCM(cardname))
   # print get_price_and_set_MagicCardMarket("Misty Rainforest")
