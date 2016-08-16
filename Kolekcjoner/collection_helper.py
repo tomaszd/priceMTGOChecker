@@ -26,12 +26,8 @@ def convert_xlsx2dict(input_file):
   return cards_dict
 
 def getCFBPrice(cardName, cardSet=None):
-  # tutaj czasem folie zabiera bo sa na gorze
+  """get card price from ChannelFireball cardname."""
   cfbURL = "http://store.channelfireball.com/products/search?q=" + urllib.quote(cardName)
-  # tu sa filtered by price
-  # cfbURL='http://store.channelfireball.com/products/search?query='+ urllib.quote(cardName)
-  # if cardSet:
-  #  cfbURL += " " + urllib.quote(cardSet)
   htmlFile = urllib.urlopen(cfbURL)
   rawHTML = htmlFile.read()
   tempIndex = rawHTML.find("grid-item-price")
@@ -42,7 +38,7 @@ def getCFBPrice(cardName, cardSet=None):
   return cfbPrice
 
 def getTCGPlayerPrices(cardName, cardSet=None):
-  # Open the TCGPlayer URL
+  """ Open the TCGPlayer URL and get cardname price"""
   tcgPlayerURL = "http://magic.tcgplayer.com/db/magic_single_card.asp?cn=" + urllib.quote(cardName)
   if cardSet:
     tcgPlayerURL += "&sn=" + urllib.quote(cardSet)
@@ -72,12 +68,12 @@ def getTCGPlayerPrices(cardName, cardSet=None):
 
 
 if __name__ == "__main__":
-  print 'dupa'
+  print 'Example Test'
   input_file = 'Luty2016.xlsx'
-  #input_file = 'Test2016.xlsx'
+  # input_file = 'Test2016.xlsx'
   my_cards = convert_xlsx2dict(input_file)
-  bledy = []
-  suma = 0
+  errors = []
+  total = 0
   lazy_loading_dict = {}
   for karta in my_cards:
     if karta['nazwa'] in lazy_loading_dict.keys():
@@ -87,7 +83,8 @@ if __name__ == "__main__":
     else:
       price = "0"
       try:
-        card_details = magic_card_market.get_price_and_set_MagicCardMarket(karta['nazwa'])
+        card_details = magic_card_market.get_price_and_set_MagicCardMarket(
+            karta['nazwa'])
         price_trend = card_details["price_trend"].split(" ")[0]
         expansion_set = card_details['expansion_set']
         # .split( " " )[0] to remove " EURO"
@@ -108,33 +105,34 @@ if __name__ == "__main__":
         """
       except:
         print "issues for {}".format(karta)
-        bledy.append(karta)
+        errors.append(karta)
 
 
     karta['cena'] = price
     lazy_loading_dict[karta['nazwa']] = price
-    suma += karta['ilosc'] * float(price.replace('$', '').replace(",", "."))
-    print " after adding {} {} - worth total in EURO :  {} -> added {}".format(karta['ilosc'],
+    total += karta['ilosc'] * float(price.replace('$', '').replace(",", "."))
+    print " after adding {} {} - worth total in EURO :  {} -> added {}".format(
+                                                                 karta['ilosc'],
                                                                  price,
-                                                                 suma,
+                                                                 total,
                                                                  karta['nazwa'])
     """
     except:
       print "issues for {}".format(karta)
-      bledy.append(karta)
+      errors.append(karta)
       # karta['cenaTCG']=getTCGPlayerPrices(karta['nazwa'])
     """
 
   timestamp = datetime.datetime.now().strftime("%Y_%B")
   result_path = "Results"
   if not os.path.exists(result_path):
-    print "There is not path {} . Creating it".format(result_path)
+    print "There is no path {} . Creating it".format(result_path)
     os.mkdir(result_path)
 
   detailed_result_path = os.path.join(result_path,
                                       "Results_" + str(timestamp))
   if not os.path.exists(detailed_result_path):
-    print "There is not path {} . Creating it".format(detailed_result_path)
+    print "There is no path {} . Creating it".format(detailed_result_path)
     os.mkdir(detailed_result_path)
 
   with open(os.path.join(detailed_result_path,
@@ -142,8 +140,8 @@ if __name__ == "__main__":
     json.dump(my_cards, outfile)
   with open(os.path.join(detailed_result_path,
                          'errors' + timestamp + '.txt'), 'w') as outfile2:
-    json.dump(bledy, outfile2)
+    json.dump(errors, outfile2)
   with open(os.path.join(detailed_result_path,
-                         'suma' + timestamp + '.txt'), 'w') as outfile3:
-    json.dump(suma, outfile3)
+                         'total' + timestamp + '.txt'), 'w') as outfile3:
+    json.dump(total, outfile3)
   print "Finito!!!!!"
