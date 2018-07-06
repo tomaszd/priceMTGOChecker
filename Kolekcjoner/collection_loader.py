@@ -1,5 +1,5 @@
-
 import json
+
 file_name = 'result2016_January_23._07:40AM.txt'
 with open(file_name) as json_file:
     json_data = json.load(json_file)
@@ -13,12 +13,15 @@ def show_card(karta):
                                    karta['nazwa'],
                                    karta['cena'],
                                    karta['komentarz'])
+
+
 cards_with_problems = []
 for karta in json_data:
 
     try:
         karta['cena'] = float(karta['cena'].replace('$', ''))
         import pdb
+
         pdb.set_trace()
     except:
         cards_with_problems.append(karta)

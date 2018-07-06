@@ -34,7 +34,7 @@ def get_singles_details_MCM(cardname=None):
             print "just one occurence for {}".format(full_url)
             card_details = {
 
-                "href":   full_url,
+                "href": full_url,
                 "comment": "1 occurence",
                 "singles": False,
                 "avail": False,
@@ -79,16 +79,16 @@ def get_singles_details_MCM(cardname=None):
         # print "rarity", rarity
         if comment:
             print "comment", comment
-        # print "singles", singles
-        # print "avail", avail
-#    print "expansion_set", expansion_set
-#    print "price", price
+            # print "singles", singles
+            # print "avail", avail
+        #    print "expansion_set", expansion_set
+        #    print "price", price
 
         card_details = {
             # "thumb":thumb,
             # "expan": expan,
             # "rarity": rarity,
-            "href":   base_url + href.split("\"")[1],
+            "href": base_url + href.split("\"")[1],
             "comment": comment,
             "singles": singles,
             "avail": avail,
@@ -96,7 +96,7 @@ def get_singles_details_MCM(cardname=None):
             "price": price}
 
         list_of_cards.append(card_details)
-    if list_of_cards == []	:
+    if list_of_cards == []:
         print "Nie ma!"
     return list_of_cards
 
@@ -128,7 +128,6 @@ def get_price_trend(lowest_price_single):
         availTable = soup.findAll("table", {"class": "availTable"})[0]
         for row in availTable.findAll("tr"):
             if "Price Trend" in row.text:
-
                 # print "Znalalzlem",row.text
                 price_trend = row.text.split("Price Trend:")[
                     1].replace('&#x20AC;', 'EURO')
@@ -154,7 +153,8 @@ def get_price_and_set_MagicCardMarket(cardname):
     lowest_price_single = get_price_trend(lowest_price_single)
     return lowest_price_single
 
-if __name__ == "__main__":\
+
+if __name__ == "__main__": \
         # print get_price_and_set_MagicCardMarket("tarmogoyf")
     # print get_price_and_set_MagicCardMarket("doran, the siege tower")
     # print get_price_and_set_MagicCardMarket("flooded strand")

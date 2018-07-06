@@ -5,6 +5,7 @@ import os
 import urllib
 import magic_card_market
 
+
 #
 # This file is for methods / class for counting amount of monet for collection
 # load collection xlsx
@@ -31,7 +32,7 @@ def convert_xlsx2dict(input_file):
 def getCFBPrice(cardName, cardSet=None):
     """get card price from ChannelFireball cardname."""
     cfbURL = "http://store.channelfireball.com/products/search?q=" + \
-        urllib.quote(cardName)
+             urllib.quote(cardName)
     htmlFile = urllib.urlopen(cfbURL)
     rawHTML = htmlFile.read()
     tempIndex = rawHTML.find("grid-item-price")
@@ -45,7 +46,7 @@ def getCFBPrice(cardName, cardSet=None):
 def getTCGPlayerPrices(cardName, cardSet=None):
     """ Open the TCGPlayer URL and get cardname price"""
     tcgPlayerURL = "http://magic.tcgplayer.com/db/magic_single_card.asp?cn=" + \
-        urllib.quote(cardName)
+                   urllib.quote(cardName)
     if cardSet:
         tcgPlayerURL += "&sn=" + urllib.quote(cardSet)
     htmlFile = urllib.urlopen(tcgPlayerURL)
