@@ -13,16 +13,15 @@ import magic_card_market
 
 def convert_xlsx2dict(input_file):
     wb = openpyxl.load_workbook(input_file)
-    sheet = wb.get_sheet_by_name('Sheet1')
-    # transfom sheet ->dict
     cards_dict = []
-    for i in range(1, len(sheet.rows)):
+    rows_in_excell = list(wb.get_sheet_by_name('Sheet1'))
+    for i in range(1, len(rows_in_excell)):
         cards_dict.append(
             {
-                'nazwa': sheet.rows[i][0].value,
-                'ilosc': int(sheet.rows[i][1].value),
-                'kolor': sheet.rows[i][2].value,
-                'komentarz': sheet.rows[i][3].value
+                'nazwa': rows_in_excell[i][0].value,
+                'ilosc': int(rows_in_excell[i][1].value),
+                'kolor': rows_in_excell[i][2].value,
+                'komentarz': rows_in_excell[i][3].value
             }
         )
 
@@ -93,13 +92,10 @@ if __name__ == "__main__":
                     karta['nazwa'])
                 price_trend = card_details["price_trend"].split(" ")[0]
                 expansion_set = card_details['expansion_set']
-                # .split( " " )[0] to remove " EURO"
                 price = card_details['price']
                 karta['expansion_set'] = expansion_set
                 karta['href'] = card_details["href"]
-                # Na razie price liczone z prcie trendu
                 price = price_trend
-                # price = getCFBPrice( karta['nazwa'] )
                 """
         {'comment': '',
         'singles': 'Singles',
