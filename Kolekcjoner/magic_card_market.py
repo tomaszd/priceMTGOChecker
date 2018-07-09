@@ -49,6 +49,8 @@ def get_singles_details_MCM(cardname=None):
         href = str(href).replace('<td>', '').replace('</td>', '')
         comment = str(comment).replace('<td>', '').replace('</td>', '')
         singles = str(singles).replace('<td>', '').replace('</td>', '')
+        if "Playmats" in singles:
+            continue
         avail = str(avail).replace('<td>', '').replace('</td>', '')
         price = str(price).replace('<td>', '').replace(
             '</td>', '').split(">")[1].split("<")[0].replace("&#x20AC;", "").strip()
@@ -101,8 +103,7 @@ def get_price_trend(lowest_price_single):
     """get price tend form sites like :
      https://www.magiccardmarket.eu/Products/Singles/Future+Sight/Tarmogoyf"""
     # 'href': '<a href="/Products/Singles/Magic+2012/Manabarbs">Manabarbs</a>' -> /Products/Singles/Magic+2012/Manabarbs
-    url_for_single = lowest_price_single["href"]
-    final_single_url = url_for_single
+    final_single_url = lowest_price_single["href"]
     price_trend = 0
     try:
         data_for_single = requests.get(final_single_url)
@@ -140,5 +141,6 @@ def get_price_and_set_MagicCardMarket(cardname):
 if __name__ == "__main__": \
         # print get_price_and_set_MagicCardMarket("tarmogoyf")
     # print get_price_and_set_MagicCardMarket("doran, the siege tower")
-    print get_price_and_set_MagicCardMarket("flooded strand")
+    # print get_price_and_set_MagicCardMarket("flooded strand")
+    print get_price_and_set_MagicCardMarket("Inferno Titan")
     # print get_price_and_set_MagicCardMarket(" Fire-lit thicket")
