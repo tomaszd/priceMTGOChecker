@@ -52,6 +52,8 @@ def get_singles_details_MCM(cardname=None):
         if "Playmats" in singles:
             continue
         avail = str(avail).replace('<td>', '').replace('</td>', '')
+        if "0" == avail:
+            continue
         price = str(price).replace('<td>', '').replace(
             '</td>', '').split(">")[1].split("<")[0].replace("&#x20AC;", "").strip()
         try:
@@ -142,5 +144,5 @@ if __name__ == "__main__": \
         # print get_price_and_set_MagicCardMarket("tarmogoyf")
     # print get_price_and_set_MagicCardMarket("doran, the siege tower")
     # print get_price_and_set_MagicCardMarket("flooded strand")
-    print get_price_and_set_MagicCardMarket("Inferno Titan")
+    print get_price_and_set_MagicCardMarket("Manabarbs")
     # print get_price_and_set_MagicCardMarket(" Fire-lit thicket")

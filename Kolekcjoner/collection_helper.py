@@ -85,8 +85,13 @@ if __name__ == "__main__":
             try:
                 card_details = magic_card_market.get_price_and_set_MagicCardMarket(
                     karta['nazwa'])
-                #price_trend = card_details["price_trend"].split(" ")[0]
-                price = card_details['price']
+                # price_trend = card_details["price_trend"].split(" ")[0]
+
+                if card_details['price'] == "strange":
+                    price = card_details['price_trend'].replace(" EURO", "")
+                else:
+                    price = card_details['price']
+                karta['cena'] = price
                 karta['expansion_set'] = card_details['expansion_set']
                 karta['href'] = card_details["href"]
                 ##price = price_trend
@@ -103,7 +108,6 @@ if __name__ == "__main__":
                 print "issues for {}".format(karta)
                 errors.append(karta)
 
-        karta['cena'] = price
         lazy_loading_dict[karta['nazwa']] = price
         total += karta['ilosc'] * float(
             price.replace('$', '').replace(",", "."))
