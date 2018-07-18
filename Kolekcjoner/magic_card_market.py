@@ -13,6 +13,7 @@ def get_singles_details_MCM(cardname=None):
         print "no card specified"
         return []
     full_url = url + cardname
+    print "Full search URL : " + "\"" + full_url.replace(" ", "+") + "\""
     try:
         data = requests.get(full_url)
         soup = BeautifulSoup(data.text)
@@ -25,7 +26,7 @@ def get_singles_details_MCM(cardname=None):
         card_details = {}
         # print "checking ",full_url
         try:
-            thumb, expan, rarity, href, comment, singles, avail, price = soup.findAll(
+            thumb, expan, rarity, href, URL, singles, avail, price = soup.findAll(
                 'tr')[row].findAll('td')
         except:
             print "just one occurence for {}".format(full_url)
@@ -47,8 +48,13 @@ def get_singles_details_MCM(cardname=None):
             print "Warning! This is PROMO price , Skipping...", href
             continue
         href = str(href).replace('<td>', '').replace('</td>', '')
-        comment = str(comment).replace('<td>', '').replace('</td>', '')
+        cardname_in_URL = str(URL).split("\">")[1].rstrip("</a></td")
+        URL = "https://www.cardmarket.com" + \
+              str(URL).replace('<td>', '').replace('</td>', '').lstrip("'<a href=\"").rstrip("</a>").split("\">")[0]
         singles = str(singles).replace('<td>', '').replace('</td>', '')
+        # e.g. Chill Haunting != Chill
+        if cardname_in_URL.lower() != cardname.lower():
+            continue
         if "Playmats" in singles:
             continue
         avail = str(avail).replace('<td>', '').replace('</td>', '')
@@ -71,12 +77,12 @@ def get_singles_details_MCM(cardname=None):
             print "Expansion set is {} .skipping then ...HIS gold bordered {}".format(expansion_set,
                                                                                       cardname)
             continue
-        if comment:
-            print "comment", comment
+        if URL:
+            print "URL: ", URL, " Price: ", price
         card_details = {
 
             "href": base_url + href.split("\"")[1],
-            "comment": comment,
+            "comment": URL,
             "singles": singles,
             "avail": avail,
             "expansion_set": expansion_set,
@@ -144,5 +150,6 @@ if __name__ == "__main__": \
         # print get_price_and_set_MagicCardMarket("tarmogoyf")
     # print get_price_and_set_MagicCardMarket("doran, the siege tower")
     # print get_price_and_set_MagicCardMarket("flooded strand")
-    print get_price_and_set_MagicCardMarket("Manabarbs")
+    #  print get_price_and_set_MagicCardMarket("Chill")
+    print get_price_and_set_MagicCardMarket("Garruk wildspeaker")
     # print get_price_and_set_MagicCardMarket(" Fire-lit thicket")
