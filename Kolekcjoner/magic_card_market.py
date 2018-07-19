@@ -13,7 +13,8 @@ def get_singles_details_MCM(cardname=None):
         print "no card specified"
         return []
     full_url = url + cardname
-    print "Full search URL : " + "\"" + full_url.replace(" ", "+") + "\""
+    full_url = full_url.replace(" ","+")
+    print "Full search URL : " + "\"" + full_url + "\""
     try:
         data = requests.get(full_url)
         soup = BeautifulSoup(data.text)
@@ -48,7 +49,7 @@ def get_singles_details_MCM(cardname=None):
             print "Warning! This is PROMO price , Skipping...", href
             continue
         href = str(href).replace('<td>', '').replace('</td>', '')
-        cardname_in_URL = str(URL).split("\">")[1].rstrip("</a></td")
+        cardname_in_URL = str(URL).split("\">")[1].replace("</a></td>","")
         URL = "https://www.cardmarket.com" + \
               str(URL).replace('<td>', '').replace('</td>', '').lstrip("'<a href=\"").rstrip("</a>").split("\">")[0]
         singles = str(singles).replace('<td>', '').replace('</td>', '')
@@ -151,5 +152,5 @@ if __name__ == "__main__": \
     # print get_price_and_set_MagicCardMarket("doran, the siege tower")
     # print get_price_and_set_MagicCardMarket("flooded strand")
     #  print get_price_and_set_MagicCardMarket("Chill")
-    print get_price_and_set_MagicCardMarket("Garruk wildspeaker")
+    print get_price_and_set_MagicCardMarket("Glissa, The traitor")
     # print get_price_and_set_MagicCardMarket(" Fire-lit thicket")
