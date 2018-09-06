@@ -1,4 +1,5 @@
 import datetime
+import time
 import json
 import openpyxl
 import os
@@ -68,6 +69,7 @@ def getTCGPlayerPrices(cardName, cardSet=None):
 
 
 if __name__ == "__main__":
+    start_time = time.time()
     print 'Example Test'
     input_file = 'Luty2016.xlsx'
     # input_file = 'Test2016.xlsx'
@@ -145,4 +147,4 @@ if __name__ == "__main__":
     with open(os.path.join(detailed_result_path,
                            'total' + timestamp + '.txt'), 'w') as outfile3:
         json.dump(total, outfile3)
-    print "Finito!!!!!"
+    print "Finito!!!!! It takes : ", time.time() - start_time, " seconnds "

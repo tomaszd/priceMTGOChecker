@@ -13,7 +13,7 @@ def get_singles_details_MCM(cardname=None):
         print "no card specified"
         return []
     full_url = url + cardname
-    full_url = full_url.replace(" ","+")
+    full_url = full_url.replace(" ", "+")
     print "Full search URL : " + "\"" + full_url + "\""
     try:
         data = requests.get(full_url)
@@ -49,7 +49,7 @@ def get_singles_details_MCM(cardname=None):
             print "Warning! This is PROMO price , Skipping...", href
             continue
         href = str(href).replace('<td>', '').replace('</td>', '')
-        cardname_in_URL = str(URL).split("\">")[1].replace("</a></td>","")
+        cardname_in_URL = str(URL).split("\">")[1].replace("</a></td>", "")
         URL = "https://www.cardmarket.com" + \
               str(URL).replace('<td>', '').replace('</td>', '').lstrip("'<a href=\"").rstrip("</a>").split("\">")[0]
         singles = str(singles).replace('<td>', '').replace('</td>', '')
@@ -69,7 +69,7 @@ def get_singles_details_MCM(cardname=None):
             print"There is no expansion ready"
             continue
 
-        if expansion_set in ["Alpha", "Beta", "Unlimited"]:
+        if expansion_set in ["Alpha", "Beta", "Unlimited", "Player-Rewards-Promos", u'Prerelease-Promos']:
             print "Expansion set is {} .skipping then ...for {}".format(expansion_set, cardname)
             continue
         if "Expedition" in expansion_set:
@@ -82,7 +82,8 @@ def get_singles_details_MCM(cardname=None):
             print "URL: ", URL, " Price: ", price
         card_details = {
 
-            "href": base_url + href.split("\"")[1],
+            # "href": base_url + href.split("\"")[1],
+            "href": URL,
             "comment": URL,
             "singles": singles,
             "avail": avail,
@@ -117,14 +118,10 @@ def get_price_trend(lowest_price_single):
     try:
         data_for_single = requests.get(final_single_url)
         soup = BeautifulSoup(data_for_single.text)
-        # get table with details
-        availTable = soup.findAll("table", {"class": "availTable"})[0]
-        for row in availTable.findAll("tr"):
-            if "Price Trend" in row.text:
-                # print "Znalalzlem",row.text
-                price_trend = row.text.split("Price Trend:")[
-                    1].replace('&#x20AC;', 'EURO')
-                break
+
+        price_trend = soup.findAll("td", text="Price Trend")[0].next.findAll("span")[0].getText().replace('&#x20AC;',
+                                                                                                          'EURO')
+
     except:
         print "problems for {}".format(final_single_url)
     lowest_price_single['price_trend'] = price_trend
@@ -147,10 +144,10 @@ def get_price_and_set_MagicCardMarket(cardname):
     return lowest_price_single
 
 
-if __name__ == "__main__": \
-        # print get_price_and_set_MagicCardMarket("tarmogoyf")
-    # print get_price_and_set_MagicCardMarket("doran, the siege tower")
-    # print get_price_and_set_MagicCardMarket("flooded strand")
-    #  print get_price_and_set_MagicCardMarket("Chill")
-    print get_price_and_set_MagicCardMarket("Glissa, The traitor")
-    # print get_price_and_set_MagicCardMarket(" Fire-lit thicket")
+if __name__ == "__main__":
+    print get_price_and_set_MagicCardMarket("tarmogoyf")
+    print get_price_and_set_MagicCardMarket("doran, the siege tower")
+    print get_price_and_set_MagicCardMarket("flooded strand")
+    print get_price_and_set_MagicCardMarket("Chill")
+    print get_price_and_set_MagicCardMarket("Gilt-leaf palace")
+    print get_price_and_set_MagicCardMarket(" Fire-lit thicket")
