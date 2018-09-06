@@ -77,7 +77,10 @@ if __name__ == "__main__":
     errors = []
     total = 0
     lazy_loading_dict = {}
+    iteration = 0
+    len_my_cards = len(my_cards)
     for karta in my_cards:
+        iteration += 1
         if karta['nazwa'] in lazy_loading_dict.keys():
             price = lazy_loading_dict[karta['nazwa']]
             print "Already price was taken for {} it is {}".format(karta['nazwa'], price)
@@ -114,12 +117,13 @@ if __name__ == "__main__":
         total += karta['ilosc'] * float(
             price.replace('$', '').replace(",", "."))
         print " after adding {} {} - worth total in EURO :  {} -> added {}".format(
-            karta[
-                'ilosc'],
+            karta['ilosc'],
             price,
             total,
             karta['nazwa'])
+        print "Processed : " + iteration + " / " + len_my_cards
         """
+        
     except:
       print "issues for {}".format(karta)
       errors.append(karta)
@@ -142,9 +146,9 @@ if __name__ == "__main__":
                            'result' + timestamp + '.txt'), 'w') as outfile:
         json.dump(my_cards, outfile)
     with open(os.path.join(detailed_result_path,
-                           'errors' + timestamp + '.txt'), 'w') as outfile2:
-        json.dump(errors, outfile2)
+                           'errors' + timestamp + '.txt'), 'w') as error_outfile:
+        json.dump(errors, error_outfile)
     with open(os.path.join(detailed_result_path,
-                           'total' + timestamp + '.txt'), 'w') as outfile3:
-        json.dump(total, outfile3)
+                           'total' + timestamp + '.txt'), 'w') as detail_outfile:
+        json.dump(total, detail_outfile)
     print "Finito!!!!! It takes : ", time.time() - start_time, " seconnds "

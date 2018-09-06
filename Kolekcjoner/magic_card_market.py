@@ -145,9 +145,9 @@ def get_price_and_set_MagicCardMarket(cardname):
 
 
 if __name__ == "__main__":
-    print get_price_and_set_MagicCardMarket("tarmogoyf")
-    print get_price_and_set_MagicCardMarket("doran, the siege tower")
-    print get_price_and_set_MagicCardMarket("flooded strand")
-    print get_price_and_set_MagicCardMarket("Chill")
-    print get_price_and_set_MagicCardMarket("Gilt-leaf palace")
-    print get_price_and_set_MagicCardMarket(" Fire-lit thicket")
+    #print get_price_and_set_MagicCardMarket("tarmogoyf")
+    #print get_price_and_set_MagicCardMarket("doran, the siege tower")
+    #print get_price_and_set_MagicCardMarket("flooded strand")
+    #print get_price_and_set_MagicCardMarket("Chill")
+    #print get_price_and_set_MagicCardMarket("Gilt-leaf palace")
+    print get_price_and_set_MagicCardMarket("Fire-lit thicket")
