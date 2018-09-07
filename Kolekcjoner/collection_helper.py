@@ -71,7 +71,7 @@ def getTCGPlayerPrices(cardName, cardSet=None):
 if __name__ == "__main__":
     start_time = time.time()
     print 'Example Test'
-    input_file = 'Sierpien2018DUZY.xlsx'
+    input_file = 'Luty2016.xlsx'
     # input_file = 'Test2016.xlsx'
     my_cards = convert_xlsx2dict(input_file)
     errors = []
@@ -121,7 +121,7 @@ if __name__ == "__main__":
             price,
             total,
             karta['nazwa'])
-        print "Processed : " + str(iteration) + " / " + str(len_my_cards) + " , " + str(iteration/len_my_cards * 100) + " %"
+        print "Processed : " + str(iteration) + " / " + str(len_my_cards) + " , " + str(iteration * 100 / len_my_cards) + " %"
         """
         
     except:
