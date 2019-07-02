@@ -20,6 +20,7 @@ def show_card(karta):
                                     karta['komentarz'])
 
 
+Total_Wartosc = 0
 cards_with_problems = []
 for karta in json_data:
 
@@ -37,13 +38,17 @@ for karta in json_data_sorted_with_cena:
 for karta in json_data_sorted_with_cena:
     if karta["cena"] <= 0.5:
         karta["cena"] = 0.5
+EURO = 4.30
+for karta in json_data_sorted_with_cena:
+    karta["cena"] = karta["cena"] * EURO
+    Total_Wartosc += karta["cena"] * karta["ilosc"]
 
-json_data_sorted = sorted(json_data_sorted_with_cena, key=lambda k: (-k['cena'],k['nazwa']))
+json_data_sorted = sorted(json_data_sorted_with_cena, key=lambda k: (-k['cena'], k['nazwa']))
 print "GOTOWE DO WYSTAWIENIA"
 for karta in json_data_sorted:
     show_card(karta)
 
-
+print "Wartosc calkowita ", Total_Wartosc
 # print "PROBLEMY!!!"
 # for karta in cards_with_problems:
 #    show_card(karta)
